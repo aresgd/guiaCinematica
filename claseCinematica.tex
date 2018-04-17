@@ -1,0 +1,204 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath} % needed for its \numberwithin command
+\newcounter{ejnumctr}
+\newcounter{ejsolctr}
+\usepackage{gensymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tikz}
+\usepackage[margin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{verbatim}
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage[english, spanish, es-nosectiondot, es-noindentfirst, es-nolists, activeacute]{babel} 
+\spanishdecimal{.}
+\usepackage{amsfonts}
+
+%:Para poner las referencias y los nombres de figuras y tablas en castellano
+\usetikzlibrary{babel}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\newlength\myverbindent 
+\setlength\myverbindent{0in} % change this to change indentation
+\makeatletter
+\def\verbatim@processline{%
+	\hspace{\myverbindent}\the\verbatim@line\par}
+\makeatother
+
+
+
+\usepackage{color}
+
+\sloppy
+\definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+\newcommand{\degC}{\,\degree \mbox{C}}
+\newcommand{\Th}{\theta (T)}
+\newcommand{\Bi}{\mbox{Bi}}
+\newcommand{\Fo}{\mbox{Fo}}
+\newcommand{\UNIT}{\textit{UNIT }}
+\newcommand{\TYPE}{\textit{TYPE }}
+\newcommand{\vc}[1]{\mathbf{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\bra}[1]{\left[#1\right]}
+\newcommand{\lp}[1]{\left(#1\right)}
+\newcommand{\dx}{d\vc x}
+\newcommand{\dX}{d\vc X}
+
+\newcommand{\pder}[2]{\frac{\partial #1}{\partial #2} }
+
+\providecommand{\e}[1]{\ensuremath{\cdot 10^{#1}}}
+
+\newenvironment{ejnum}{%      define a custom environment
+	\bigskip\noindent%         create a vertical offset to previous material
+	\refstepcounter{ejnumctr}% increment the environment's counter
+	\textbf{Ejercicio propuesto}% or \textbf, \textit, ...
+	\newline%
+}{\par\bigskip}  %          create a vertical offset to following material
+%\numberwithin{ejnumctr}{section}
+
+\newenvironment{ejsol}{%      define a custom environment
+	\bigskip\noindent%         create a vertical offset to previous material
+	\refstepcounter{ejsolctr}% increment the environment's counter
+	\textbf{Soluci\'on}% or \textbf, \textit, ...
+	\newline%
+}{\par\bigskip}  %          create a vertical offset to following material
+%\numberwithin{ejnumctr}{section}
+
+\title{Trabajo práctico: casos particulares de deformación y cinemática de elementos estructurales}
+%\author{Gonzalo D. Ares}
+\date{}
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Introducción}
+
+En el contexto de análisis de estructuras existen numerosos modelos matemáticos que, a partir de distintas hipótesis simplificativas, nos permiten analizar estructuras complejas reduciéndolas a esquemas más sencillos. A pesar de su simpleza, siempre que la realidad se acerque a las hipótesis planteadas en cada caso, estos modelos son herramientas fundamentales para predecir el comportamiento mecánico de estructuras y para establecer criterios de diseño. 
+
+En esta guía nos proponemos estudiar, en primer lugar, la cinemática de algunos casos particulares para ilustrar como son representados en el tensor gradiente de deformaciones $\vc F$ y los tensores asociados. Además, analizaremos diferentes componentes estructurales idealizados.
+
+A partir de las diferentes medidas de deformación consistentes con las hipótesis propuestas, podremos analizar los estados tensionales correspondientes utilizando las ecuaciones constitutivas provistar por la teoría de elasticidad lineal. Estas ecuaciones constitutivas establecen una relación entre el estado de deformaciones y tensiones de un material.
+
+
+\section{Casos particulares}
+
+\subsection{Corte simple}
+
+Se analiza el comportamiento mecánico de la plancha de cobre cuya configuración material libre de cargas se encuentra representada en la figura. La misma tiene espesor homogéneo $e$ y se encuentra sometida principalmente a esfuerzos de corte. 
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}
+	\draw (0,0) -- (1,0);
+	\draw (1,0) -- (1,1);
+	\draw (1,1) -- (0,1);
+	\draw (0,1) -- (0,0);
+	
+	\node[anchor=west] at (1.4,1) {\scriptsize$(k,1)$};
+	\node[anchor=east] at (0,1) {\scriptsize$(0,1)$};
+	\node[anchor=north] at (1,0) {\scriptsize$(1,0)$};
+	
+	\draw[dashed,blue] (0,0) -- (1,0);
+	\draw[dashed,blue] (1,0) -- (1.4,1);
+	\draw[dashed,blue] (1.4,1) -- (0.4,1);
+	\draw[dashed,blue] (0.4,1) -- (0,0);
+	
+	\draw[->,dashed,=>stealth] (-0.5,0) -- (2,0) node[below] {\scriptsize $\vc e_1$};
+	\draw[->,dashed,=>stealth] (0,-0.5) -- (0,2) node[left] { \scriptsize $\vc e_2$};
+	\end{tikzpicture}
+\end{figure}
+
+Como consecuencia de estas solicitaciones, se observa el siguiente campo de desplazamientos (desc. material)
+\begin{equation}
+\vc U = \begin{bmatrix}
+k_1 X_2 \\ 0 \\ 0
+\end{bmatrix}
+\end{equation}
+
+Este problema es un caso particular que es comúnmente llamado como \textit{estado de corte simple}. Para el mismo, se propone calcular:
+\begin{enumerate}[a)]
+\item $Grad (\vc U)$,
+\item $\vc F$,
+\item $\vc E$,
+\item la descomposición simétrica y antisimétrica de $\vc F$,
+\item el volumen final de la plancha, y
+\item el ángulo formado entre el eje $\vc e_2$ y la arista de la plancha.
+\end{enumerate}
+
+\subsubsection*{Propuesta adicional}
+Se propone repetir el análisis cuando el campo de desplazamientos observado es ahora
+\begin{equation}
+\vc U = \begin{bmatrix}
+k_1 X_2 \\ k_2 X_1 \\ 0
+\end{bmatrix}.
+\end{equation}
+
+Además, realize un esquema mostrando el estado final de la plancha y observe los ángulos entre los ejes coordenados y las aristas en su posición deformada.
+
+
+
+\subsection{Movimientos rígidos: traslación y rotación}
+
+
+
+\subsection{Estiramiento puro y homogéneo}
+
+
+\section{Elementos estructurales}
+
+\subsection{Barra de sección rectangular sometida a compresión}
+
+
+
+\subsection{Barra circular sometida a torsión}
+
+Estudiemos el estado de deformaciones de una sección de una barra sometida a únicamente a una torsión axial. En esta situación es razonable admitir como hipótesis que una sección cualquiera de la barra gira de manera homogénea con respecto a su eje. Para una barra orientada en la dirección del eje $z$, denotaremos este giro $\theta_z(z)$ y admitiremos que no es necesariamente constante en toda la barra.
+
+Luego, para una sección cualquiera de la barra ($z$ fijo) los desplazamientos pueden ser escritos como
+\begin{equation}
+\vc U = \begin{bmatrix}
+0 \\ 0
+\end{bmatrix}
+\end{equation}
+
+
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}
+	
+	\end{tikzpicture}
+\end{figure}
+
+\subsection{Viga de Euler-Bernoulli}
+
+\subsection{Viga de Timoshenko}
+
+
+\end{document}
+
+\section{Barra circular sometida a torsión}
+
+\section{Viga de Euler-Bernoulli}
+
+\section{Viga de Timoshenko}
+
+\section{Flujo de Couette}
+
+
+
+
+\end{document}
+
+
+
